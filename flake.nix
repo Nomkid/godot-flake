@@ -10,10 +10,10 @@
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
 
-      version = "4.2.1";
+      version = "4.3-dev6";
       godot-stable = pkgs.fetchurl {
-        url = "https://github.com/godotengine/godot/releases/download/${version}-stable/Godot_v${version}-stable_linux.x86_64.zip";
-        hash = "sha256-hjEannW3RF60IVMS5gTfH2nHLUZBrz5nBJ4wNWrjdmA=";
+        url = "https://github.com/godotengine/godot-builds/releases/download/${version}/Godot_v${version}_linux.x86_64.zip";
+        hash = "sha256-FBABKXKUtDpmlbVdcDIqm45QlrIhPE7n33e1l6+gVG0=";
       };
 
       buildInputs = with pkgs; [
@@ -37,11 +37,13 @@
         xorg.libXinerama
         xorg.libXrandr
         xorg.libXrender
+        wayland-utils
+        wayland-scanner
       ];
 
       godot-unwrapped = pkgs.stdenv.mkDerivation {
         pname = "godot";
-        version = "4.2.1";
+        version = "4.3-dev6";
 
         src = godot-stable;
         nativeBuildInputs = with pkgs; [unzip autoPatchelfHook];
@@ -56,7 +58,7 @@
 
         installPhase = ''
           mkdir -p $out/bin
-          cp source/Godot_v${version}-stable_linux.x86_64 $out/bin/godot
+          cp source/Godot_v${version}_linux.x86_64 $out/bin/godot
         '';
       };
 
