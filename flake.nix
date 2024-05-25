@@ -39,6 +39,7 @@
         xorg.libXrender
         wayland-utils
         wayland-scanner
+        libdecor
       ];
 
       godot-unwrapped = pkgs.stdenv.mkDerivation {
@@ -68,6 +69,11 @@
         runScript = "godot";
       };
     in {
+      apps = rec {
+        godot = flake-utils.lib.mkApp { drv = godot-bin; };
+        default = godot;
+      };
+
       devShell = pkgs.mkShell {
         buildInputs = [godot-bin];
       };
