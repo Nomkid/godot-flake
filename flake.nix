@@ -10,10 +10,10 @@
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
 
-      version = "4.3-rc2";
+      version = "4.3-stable";
       godot-stable = pkgs.fetchurl {
-        url = "https://github.com/godotengine/godot-builds/releases/download/4.3-rc2/Godot_v4.3-rc2_linux.x86_64.zip";
-        hash = "sha256-rBVP1QFy7f7GHJFf/EsWh9M0uLbHwZXfyclGjjl8fls=";
+        url = "https://github.com/godotengine/godot-builds/releases/download/${version}/Godot_v${version}_linux.x86_64.zip";
+        hash = "sha256-feVkRLEwsQr4TRnH4M9jz56ZN+5LqUNkw7fdEUJTyiE=";
       };
 
       buildInputs = with pkgs; [
