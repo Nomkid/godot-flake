@@ -64,15 +64,12 @@
       };
 
       godot-bin = pkgs.buildFHSUserEnv {
-        name = "godot";
+        name = "godot-bin";
         targetPkgs = pkgs: buildInputs ++ [godot-unwrapped];
         runScript = "godot";
       };
     in {
-      apps = rec {
-        godot = flake-utils.lib.mkApp { drv = godot-bin; };
-        default = godot;
-      };
+      packages.default = godot-bin;
 
       devShell = pkgs.mkShell {
         buildInputs = [godot-bin];
