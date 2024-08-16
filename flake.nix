@@ -19,7 +19,7 @@
       commitHash = "77dcf97d82cbfe4e4615475fa52ca03da645dbd8";
 
       buildInputs = with pkgs; [
-        wayland-utils
+        # wayland-utils
         wayland-scanner
         libdecor
       ];
@@ -34,38 +34,20 @@
           hash = "sha256-v2lBD3GEL8CoIwBl3UoLam0dJxkLGX0oneH6DiWkEsM=";
         };
 
-        buildInputs = buildInputs ++ prev.buildInputs;
+        # buildInputs = buildInputs ++ prev.buildInputs;
+        # nativeBuildInputs = buildInputs ++ prev.nativeBuildInputs;
         runtimeDependencies = buildInputs ++ prev.runtimeDependencies;
       });
 
-      # godot-unwrapped = pkgs.stdenv.mkDerivation {
-      #   pname = "godot";
-      #   version = "4.3-beta1";
-
-      #   src = godot-stable;
-      #   nativeBuildInputs = with pkgs; [unzip autoPatchelfHook];
-      #   buildInputs = buildInputs;
-
-      #   dontAutoPatchelf = false;
-
-      #   unpackPhase = ''
-      #     mkdir source
-      #     unzip $src -d source
-      #   '';
-
-      #   installPhase = ''
-      #     mkdir -p $out/bin
-      #     cp source/Godot_v${version}_linux.x86_64 $out/bin/godot
-      #   '';
-      # };
-
-      # godot-bin = pkgs.buildFHSUserEnv {
-      #   name = "godot";
-      #   targetPkgs = pkgs: buildInputs ++ [godot-unwrapped];
-      #   runScript = "godot";
-      # };
+      godot-templates-release = godot-bin.override { withTarget = "template_release"; };
+      godot-templates-debug = godot-bin.override { withTarget = "template_debug"; };
     in {
-      packages.default = godot-bin;
+      packages = rec {
+        editor = godot-bin;
+        templates-release = godot-templates-release;
+        templates-debug = godot-templates-debug;
+        default = editor;
+      };
 
       devShell = pkgs.mkShell {
         buildInputs = [godot-bin];
