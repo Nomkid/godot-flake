@@ -37,20 +37,6 @@
     runScript = "godot";
   };
 
-  # TODO remove
-  targets = {
-    i686-linux = "linux.x86_32";
-    x86_64-linux = "linux.x86_64";
-    aarch64-linux = "linux.x86_64";
-
-    x86_64-darwin = "macos.universal";
-    aarch64-darwin = "macos.universal";
-
-    i686-windows = "win32.exe";
-    x86_64-windows = "win64.exe";
-    aarch64-windows = "windows_arm64.exe";
-  };
-
   # these map nix-compatible systems to the file extension used in godot exports
   # they differ slightly between some versions so we construct a lookup table here
   target-map = version: let
@@ -112,9 +98,12 @@ in rec {
     inherit version;
     sha512 = filelist."Godot_v${version}_${target}.zip";
   })) sources;
-  # export-templates = pkgs.fetchurl {
-    
-  # };
+
+  export-templates = builtins.mapAttrs (version: filelist: pkgs.fetchurl {
+    url = "https://github.com/godotengine/godot-builds/releases/download/${version}/Godot_v${version}_export_templates.tpz";
+    inherit version;
+    sha512 = filelist."Godot_v${version}_export_templates.tpz";
+  }) sources;
 
   default = editor.${lib.lists.last (
     builtins.sort

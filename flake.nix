@@ -91,29 +91,12 @@
       # lib = import ./default.nix { inherit pkgs system; };
       packages = import ./default.nix { inherit pkgs system; };
     in {
-      # packages = rec {
-      #   editor = bin.editor;
-      #   # templates-release = godot-templates-release;
-      #   # templates-debug = godot-templates-debug;
-      #   default = editor;
-      # };
+      packages = packages.editor // { default = packages.default; };
 
-      # devShell = pkgs.mkShell {
-      #   buildInputs = [bin.editor];
-      # };i
-
-      # packages = {
-      #   default = lib.${system}.${version}.editor;
-      # };
-      
-      # editor = builtins.mapAttrs (k: v: v.editor) lib.${system};
-
-      packages = { default = packages.default; };
-
-      by-tag = packages.editor;
+      editor = packages.editor;
+      export-templates = packages.export-templates;
 
       update-sources = godot-build-list;
-      # inherit godot-build-list build-list list;
     });
   in {
     
